@@ -25,7 +25,7 @@ module.exports.loop = function () {
         spawnMiner = true;
     else if (haulers.length < 1)
         spawnHauler = true;
-    else if (upgraders.length < 3)
+    else if (upgraders.length < 2)
         spawnUpgrader = true;
     else if (builders.length < 1)
         spawnBuilder = true;
