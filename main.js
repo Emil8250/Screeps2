@@ -4,7 +4,6 @@ var roleUpgrader = require('role.upgrader')
 var roleBuilder = require('role.builder')
 var buildExtensions = require('build.extensions');
 module.exports.loop = function () {
-    var gameSpawns = Object.keys(Game.spawns);
     var currentSpawn;
     for (var spawn in Game.spawns) {
         currentSpawn = Game.spawns[spawn];
@@ -27,7 +26,7 @@ module.exports.loop = function () {
         spawnHauler = true;
     else if (upgraders.length < 2)
         spawnUpgrader = true;
-    else if (builders.length < 1)
+    else if (builders.length < 3 && currentSpawn.room.find(FIND_CONSTRUCTION_SITES).length > 0)
         spawnBuilder = true;
     
     if (spawnMiner) {
