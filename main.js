@@ -8,7 +8,7 @@ module.exports.loop = function () {
     for (var spawn in Game.spawns) {
         currentSpawn = Game.spawns[spawn];
     }
-    if (Game.cpu.bucket > 5000)
+    if (Game.cpu.bucket > 10000)
         Game.cpu.generatePixel();
 
     var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
