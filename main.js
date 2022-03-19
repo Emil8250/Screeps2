@@ -3,12 +3,14 @@ var roleHauler = require('role.hauler');
 var roleUpgrader = require('role.upgrader')
 var roleBuilder = require('role.builder')
 var buildExtensions = require('build.extensions');
+var buildContainers = require('build.containers');
+var roleContainerRepair = require('role.containerRepair');
 module.exports.loop = function () {
     var currentSpawn;
     for (var spawn in Game.spawns) {
         currentSpawn = Game.spawns[spawn];
     }
-    if (Game.cpu.bucket > 10000)
+    if (Game.cpu.bucket > 9999)
         Game.cpu.generatePixel();
 
     var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
@@ -19,6 +21,8 @@ module.exports.loop = function () {
     var spawnUpgrader = false;
     var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
     var spawnBuilder = false;
+    var containerRepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'containerRepair');
+    var spawnContainerRepairer = false;
     
     if (miners.length < 1)
         spawnMiner = true;
@@ -26,7 +30,7 @@ module.exports.loop = function () {
         spawnHauler = true;
     else if (upgraders.length < 2)
         spawnUpgrader = true;
-    else if (builders.length < 3 && currentSpawn.room.find(FIND_CONSTRUCTION_SITES).length > 0)
+    else if (builders.length < 1 && currentSpawn.room.find(FIND_CONSTRUCTION_SITES).length > 0)
         spawnBuilder = true;
     
     if (spawnMiner) {
@@ -66,6 +70,7 @@ module.exports.loop = function () {
             });
     }
     buildExtensions.run(currentSpawn.room.name);
+    buildContainers.run(currentSpawn.room);
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
 
