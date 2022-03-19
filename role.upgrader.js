@@ -23,8 +23,8 @@ var upgrader = {
             }
         } else {
             if(useContainers){
-                if(creep.withdraw(sources[1], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE && creep.store.getFreeCapacity() != 0) {
-                    creep.moveTo(sources[1], {visualizePathStyle: {stroke: '#ffaa00'}});
+                if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE && creep.store.getFreeCapacity() != 0) {
+                    creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             }
             else if (droppedResources.length > 0) {
