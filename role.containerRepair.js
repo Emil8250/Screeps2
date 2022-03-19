@@ -1,5 +1,5 @@
 var containerRepair = {
-    run: function (creep) {
+    run: function (creep, targets) {
         var lowContainer = _.min(targets, function(container) { return container.hits; });
         if(!creep.memory.container)
             creep.memory.container = lowContainer.id;

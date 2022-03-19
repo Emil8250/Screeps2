@@ -23,7 +23,15 @@ module.exports.loop = function () {
     var spawnBuilder = false;
     var containerRepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'containerRepair');
     var spawnContainerRepairer = false;
-    
+
+    var targets = currentSpawn.room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_CONTAINER);
+        }
+    });
+    var lowContainer;
+    if (targets != null)
+        lowContainer = _.min(targets, function(container) { return container.hits; });
     if (miners.length < 1)
         spawnMiner = true;
     else if (haulers.length < 1)
@@ -32,6 +40,8 @@ module.exports.loop = function () {
         spawnUpgrader = true;
     else if (builders.length < 1 && currentSpawn.room.find(FIND_CONSTRUCTION_SITES).length > 0)
         spawnBuilder = true;
+    else if(containerRepairers.length < 1 && lowContainer != null && lowContainer.hits < 10000)
+        spawnContainerRepairer = true;
     
     if (spawnMiner) {
         var newName = 'miner' + Game.time;
@@ -69,6 +79,16 @@ module.exports.loop = function () {
                 }
             });
     }
+    if (spawnContainerRepairer){
+        var newName = 'containerRepairer' + Game.time;
+        currentSpawn.spawnCreep([WORK, CARRY, CARRY, CARRY, MOVE], newName,
+            {
+                memory: {
+                    role: 'containerRepair',
+                }
+            });
+    }
+        
     buildExtensions.run(currentSpawn.room.name);
     buildContainers.run(currentSpawn.room);
     for(var name in Game.creeps) {
@@ -86,6 +106,9 @@ module.exports.loop = function () {
                 break;
             case 'builder':
                 roleBuilder.run(creep);
+                break;
+            case 'containerRepair':
+                roleContainerRepair.run(creep, targets);
                 break;
         }
     }

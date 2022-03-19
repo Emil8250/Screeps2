@@ -1,19 +1,16 @@
 var upgrader = {
     /** @param {Creep} creep **/
     run: function (creep) {
+        var useContainers = true;
         var droppedResources = creep.room.find(FIND_DROPPED_RESOURCES);
         var containers = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_CONTAINER);
             }
         });
-        if (containers.length === 0) {
-            containers = creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_SPAWN);
-                }
-            });
-        }
+        if (containers.length === 0) 
+            useContainers = false;
+        
         if (creep.store.getFreeCapacity() == 0) {
             creep.memory.upgrading = true;
         }
@@ -25,7 +22,12 @@ var upgrader = {
                 creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
             }
         } else {
-            if (droppedResources.length > 0) {
+            if(useContainers){
+                if(creep.withdraw(sources[1], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE && creep.store.getFreeCapacity() != 0) {
+                    creep.moveTo(sources[1], {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
+            }
+            else if (droppedResources.length > 0) {
                 creep.pickup(droppedResources[0]);
                 if (creep.pickup(droppedResources[0] == ERR_NOT_IN_RANGE) && creep.store.getFreeCapacity() != 0) {
                     creep.moveTo(droppedResources[0])
