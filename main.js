@@ -5,6 +5,7 @@ var roleBuilder = require('role.builder')
 var buildExtensions = require('build.extensions');
 var buildContainers = require('build.containers');
 var roleContainerRepair = require('role.containerRepair');
+var roleExtensionFiller = require('role.extionsionFiller');
 module.exports.loop = function () {
     var currentSpawn;
     for (var spawn in Game.spawns) {
@@ -23,6 +24,8 @@ module.exports.loop = function () {
     var spawnBuilder = false;
     var containerRepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'containerRepair');
     var spawnContainerRepairer = false;
+    var extensionFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'extensionFiller');
+    var spawnExtensionFiller = false;
 
     var targets = currentSpawn.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
@@ -34,15 +37,16 @@ module.exports.loop = function () {
         lowContainer = _.min(targets, function(container) { return container.hits; });
     if (miners.length < 1)
         spawnMiner = true;
-    else if (haulers.length < 1)
-        spawnHauler = true;
-    else if (upgraders.length < 2)
-        spawnUpgrader = true;
+    /*else if (haulers.length < 1)
+        spawnHauler = true;*/
     else if (builders.length < 1 && currentSpawn.room.find(FIND_CONSTRUCTION_SITES).length > 0)
         spawnBuilder = true;
     else if(containerRepairers.length < 1 && lowContainer != null && lowContainer.hits < 10000)
         spawnContainerRepairer = true;
-    
+    else if(extensionFillers.length < 1)
+        spawnExtensionFiller = true;
+    else if (upgraders.length < 2)
+        spawnUpgrader = true;
     if (spawnMiner) {
         var newName = 'miner' + Game.time;
         currentSpawn.spawnCreep([WORK, WORK, MOVE], newName,
@@ -88,6 +92,15 @@ module.exports.loop = function () {
                 }
             });
     }
+    if (spawnExtensionFiller){
+        var newName = 'extensionFiller' + Game.time;
+        currentSpawn.spawnCreep([WORK, CARRY, CARRY, CARRY, MOVE], newName,
+            {
+                memory: {
+                    role: 'extensionFiller',
+                }
+            });
+    }
         
     buildExtensions.run(currentSpawn.room.name);
     buildContainers.run(currentSpawn.room);
@@ -106,6 +119,9 @@ module.exports.loop = function () {
                 break;
             case 'builder':
                 roleBuilder.run(creep);
+                break;
+            case 'extensionFiller':
+                roleExtensionFiller.run(creep);
                 break;
             case 'containerRepair':
                 roleContainerRepair.run(creep, targets);
