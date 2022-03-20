@@ -13,7 +13,8 @@ module.exports.loop = function () {
     }
     if (Game.cpu.bucket > 9999)
         Game.cpu.generatePixel();
-
+    var totalAvailableEnergy = currentSpawn.room.energyAvailable;
+    
     var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
     var spawnMiner = false;
     var haulers = _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler');
@@ -45,7 +46,7 @@ module.exports.loop = function () {
         spawnContainerRepairer = true;
     else if(extensionFillers.length < 1)
         spawnExtensionFiller = true;
-    else if (upgraders.length < 2)
+    else if (totalAvailableEnergy > 650 && targets[0].store.getUsedCapacity() > 650)
         spawnUpgrader = true;
     if (spawnMiner) {
         var newName = 'miner' + Game.time;
