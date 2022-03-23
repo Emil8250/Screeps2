@@ -129,4 +129,16 @@ module.exports.loop = function () {
                 break;
         }
     }
+    Memory.stats = {
+        ControllerProgress: Game.spawns.Spawn1.room.controller.progress,
+        UsedCpu: Game.cpu.getUsed(),
+        RCL: Game.spawns.Spawn1.room.controller.level,
+        RCLCurrent: Game.spawns.Spawn1.room.controller.progress,
+        RCLNext: Game.spawns.Spawn1.room.controller.progressTotal,
+        GCL: Game.gcl.level,
+        GCLCurrent: Game.gcl.progress,
+        GCLNext: Game.gcl.progressTotal,
+        Miners: miners.length,
+        Upgraders: upgraders.length,
+    };
 }
