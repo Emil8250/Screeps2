@@ -46,4 +46,4 @@ function SpawnWorker(spawn, worker, role){
             }
         });
 };
-module.exports = {SpawnMiner, SpawnUpgrader, SpawnFiller};
+module.exports = {SpawnMiner:SpawnMiner, SpawnUpgrader:SpawnUpgrader, SpawnFiller:SpawnFiller};

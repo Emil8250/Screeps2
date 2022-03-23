@@ -52,7 +52,7 @@ module.exports.loop = function () {
         spawnUpgrader = true;
 
     if (spawnMiner) {
-        miscWorker.SpawnMiner(currentSpawn);
+        miscWorker.SpawnMiner.SpawnMiner(currentSpawn);
     }
     if (spawnHauler) {
         var newName = 'hauler' + Game.time;
@@ -64,7 +64,7 @@ module.exports.loop = function () {
             });
     }
     if (spawnUpgrader) {
-        miscWorker.SpawnUpgrader(currentSpawn);
+        miscWorker.SpawnUpgrader.SpawnUpgrader(currentSpawn);
     }
     if (spawnBuilder) {
         var newName = 'builder' + Game.time;
@@ -85,7 +85,7 @@ module.exports.loop = function () {
             });
     }
     if (spawnExtensionFiller){
-        miscWorker.SpawnFiller(currentSpawn);
+        miscWorker.SpawnFiller.SpawnFiller(currentSpawn);
     }
         
     buildExtensions.run(currentSpawn.room.name);
