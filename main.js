@@ -6,6 +6,8 @@ var buildExtensions = require('build.extensions');
 var buildContainers = require('build.containers');
 var roleContainerRepair = require('role.containerRepair');
 var roleExtensionFiller = require('role.extionsionFiller');
+var miscWorker = require('misc.workers');
+
 module.exports.loop = function () {
     var currentSpawn;
     for (var spawn in Game.spawns) {
@@ -49,13 +51,7 @@ module.exports.loop = function () {
     else if (totalAvailableEnergy > 650 && targets[0].store.getUsedCapacity() > 650)
         spawnUpgrader = true;
     if (spawnMiner) {
-        var newName = 'miner' + Game.time;
-        currentSpawn.spawnCreep([WORK, WORK, MOVE], newName,
-            {
-                memory: {
-                    role: 'miner',
-                }
-            });
+        miscWorker.SpawnMiner(currentSpawn);
     }
     if (spawnHauler) {
         var newName = 'hauler' + Game.time;
