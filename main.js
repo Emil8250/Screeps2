@@ -48,8 +48,9 @@ module.exports.loop = function () {
         spawnContainerRepairer = true;
     else if(extensionFillers.length < 1)
         spawnExtensionFiller = true;
-    else if (totalAvailableEnergy > 650 && targets[0].store.getUsedCapacity() > 650)
+    else if (upgraders.length < 2)
         spawnUpgrader = true;
+
     if (spawnMiner) {
         miscWorker.SpawnMiner(currentSpawn);
     }
