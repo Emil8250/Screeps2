@@ -64,13 +64,7 @@ module.exports.loop = function () {
             });
     }
     if (spawnUpgrader) {
-        var newName = 'upgrader' + Game.time;
-        currentSpawn.spawnCreep([WORK, WORK, CARRY, MOVE], newName,
-            {
-                memory: {
-                    role: 'upgrader',
-                }
-            });
+        miscWorker.SpawnUpgrader(currentSpawn);
     }
     if (spawnBuilder) {
         var newName = 'builder' + Game.time;
@@ -91,13 +85,7 @@ module.exports.loop = function () {
             });
     }
     if (spawnExtensionFiller){
-        var newName = 'extensionFiller' + Game.time;
-        currentSpawn.spawnCreep([WORK, CARRY, CARRY, CARRY, MOVE], newName,
-            {
-                memory: {
-                    role: 'extensionFiller',
-                }
-            });
+        miscWorker.SpawnFiller(currentSpawn);
     }
         
     buildExtensions.run(currentSpawn.room.name);
