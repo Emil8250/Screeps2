@@ -1,9 +1,5 @@
 var buildContainers = {
     run: function (room) {
-        var flag = Game.flags.containers;
-        if (flag === undefined)
-            return;
-        
         var sources = room.find(FIND_SOURCES);
         var terrain = Game.map.getRoomTerrain(room.name);
         var canBePlacedAbove = terrain.get(sources[0].pos.x, sources[0].pos.y - 1) !== TERRAIN_MASK_WALL;
