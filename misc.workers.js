@@ -3,10 +3,12 @@ var SpawnMiner = {
 
         var energyCapacity = spawn.room.energyCapacityAvailable;
         var energyAvailable = spawn.room.energyAvailable;
-        if(energyCapacity === 300 || energyAvailable < 451)
-            SpawnWorker(spawn, [WORK, WORK, MOVE]);
-        else
+        if(energyAvailable > 651)
+            SpawnWorker(spawn,[WORK, WORK, WORK, WORK, WORK, MOVE]);
+        else if(energyAvailable > 451)
             SpawnWorker(spawn,[WORK, WORK, WORK, WORK, MOVE]);
+        else
+            SpawnWorker(spawn,[WORK, WORK, MOVE]);
 
     }
 };
