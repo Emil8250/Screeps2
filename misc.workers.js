@@ -28,7 +28,9 @@ var SpawnBuilder = {
     SpawnBuilder: function (spawn) {
         var role = 'builder';
         var energyAvailable = spawn.room.energyAvailable;
-        if (energyAvailable > 601) SpawnWorker(spawn, [WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], role); else if (energyAvailable > 501) SpawnWorker(spawn, [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], role); else SpawnWorker(spawn, [WORK, CARRY, CARRY, CARRY, MOVE], role);
+        if (energyAvailable > 601) SpawnWorker(spawn, [WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], role); 
+        else if (energyAvailable > 501) SpawnWorker(spawn, [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], role); 
+        else SpawnWorker(spawn, [WORK, CARRY, CARRY, CARRY, MOVE], role);
     }
 }
 
