@@ -53,7 +53,7 @@ module.exports.loop = function () {
         spawnHauler = true;*/
     else if (builders.length < 1 && currentSpawn.room.find(FIND_CONSTRUCTION_SITES).length > 0)
         spawnBuilder = true;
-    else if(containerRepairers.length < 1 && lowContainer != null && lowContainer.hits < 10000)
+    else if(containerRepairers.length < 1 && lowContainer != null && lowContainer.hits < 100000)
         spawnContainerRepairer = true;
     else if(extensionFillers.length < 1)
         spawnExtensionFiller = true;
