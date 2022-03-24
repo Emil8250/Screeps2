@@ -21,8 +21,8 @@ var FetchEnergy = {
             useContainers = false;
         
         if (useContainers) {
-            if (creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE && creep.store.getFreeCapacity() != 0) {
-                creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            if (creep.withdraw(storages[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE && creep.store.getFreeCapacity() != 0) {
+                creep.moveTo(storages[0], {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         } else if (droppedResources.length > 0) {
             creep.pickup(droppedResources[0]);
