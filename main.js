@@ -7,6 +7,7 @@ var buildContainers = require('build.containers');
 var roleContainerRepair = require('role.containerRepair');
 var roleExtensionFiller = require('role.extionsionFiller');
 var miscWorker = require('misc.workers');
+var buildConstructions = require('build.constructions')
 
 module.exports.loop = function () {
     var currentSpawn;
@@ -16,7 +17,6 @@ module.exports.loop = function () {
     if (Game.cpu.bucket > 9999)
         Game.cpu.generatePixel();
     var totalAvailableEnergy = currentSpawn.room.energyAvailable;
-    
     var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
     var spawnMiner = false;
     var haulers = _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler');
@@ -67,13 +67,7 @@ module.exports.loop = function () {
         miscWorker.SpawnUpgrader.SpawnUpgrader(currentSpawn);
     }
     if (spawnBuilder) {
-        var newName = 'builder' + Game.time;
-        currentSpawn.spawnCreep([WORK, CARRY, CARRY, CARRY, MOVE], newName,
-            {
-                memory: {
-                    role: 'builder',
-                }
-            });
+        miscWorker.SpawnBuilder.SpawnBuilder(currentSpawn);
     }
     if (spawnContainerRepairer){
         var newName = 'containerRepairer' + Game.time;
@@ -90,6 +84,7 @@ module.exports.loop = function () {
         
     buildExtensions.run(currentSpawn.room.name);
     buildContainers.run(currentSpawn.room);
+    buildConstructions.storage(currentSpawn);
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
 
