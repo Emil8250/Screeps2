@@ -6,6 +6,7 @@ var buildExtensions = require('build.extensions');
 var buildContainers = require('build.containers');
 var roleContainerRepair = require('role.containerRepair');
 var roleExtensionFiller = require('role.extionsionFiller');
+var roleStorageFiller = require('role.storageFiller');
 var miscWorker = require('misc.workers');
 var buildConstructions = require('build.constructions')
 
@@ -29,7 +30,15 @@ module.exports.loop = function () {
     var spawnContainerRepairer = false;
     var extensionFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'extensionFiller');
     var spawnExtensionFiller = false;
+    var storageFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'storageFiller');
+    var spawnStorageFiller = false;
 
+    var storages = currentSpawn.room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_STORAGE);
+        }
+    });
+    
     var targets = currentSpawn.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
             return (structure.structureType == STRUCTURE_CONTAINER);
@@ -48,6 +57,8 @@ module.exports.loop = function () {
         spawnContainerRepairer = true;
     else if(extensionFillers.length < 1)
         spawnExtensionFiller = true;
+    else if(storageFillers.length < 1 && storages.length !== 0)
+        spawnStorageFiller = true;
     else if (upgraders.length < 2)
         spawnUpgrader = true;
 
@@ -81,6 +92,8 @@ module.exports.loop = function () {
     if (spawnExtensionFiller){
         miscWorker.SpawnFiller.SpawnFiller(currentSpawn);
     }
+    if (spawnStorageFiller)
+        miscWorker.SpawnStorageFiller.SpawnStorageFiller(currentSpawn);
         
     buildExtensions.run(currentSpawn.room.name);
     buildContainers.run(currentSpawn.room);

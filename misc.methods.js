@@ -1,13 +1,23 @@
 var FetchEnergy = {
-    FetchEnergy: function (creep) {
+    FetchEnergy: function (creep, onlyContainers = false) {
         var droppedResources = creep.room.find(FIND_DROPPED_RESOURCES);
         var useContainers = true;
-        var containers = creep.room.find(FIND_STRUCTURES, {
+        var storages = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
-                return (structure.structureType == STRUCTURE_CONTAINER);
+                return (structure.structureType == STRUCTURE_STORAGE);
             }
         });
-        if (containers.length === 0)
+        if (onlyContainers)
+            storages.length = 0;
+        if (storages.length === 0)
+        {
+            storages = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_CONTAINER);
+                }
+            });
+        }
+        if (storages.length === 0)
             useContainers = false;
         
         if (useContainers) {

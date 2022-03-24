@@ -30,6 +30,16 @@ var SpawnBuilder = {
     }
 }
 
+var SpawnStorageFiller = {
+    SpawnStorageFiller: function (spawn) {
+        var role = 'storageFiller';
+        var energyAvailable = spawn.room.energyAvailable;
+        if (energyAvailable > 601) SpawnWorker(spawn, [WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role); 
+        else if (energyAvailable > 501) SpawnWorker(spawn, [WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role); 
+        else SpawnWorker(spawn, [WORK, CARRY, CARRY, CARRY, MOVE], role);
+    }
+}
+
 function SpawnWorker(spawn, worker, role) {
     var newName = role + Game.time;
     spawn.spawnCreep(worker, newName, {
@@ -37,5 +47,12 @@ function SpawnWorker(spawn, worker, role) {
             role: role,
         }
     });
+}
+
+module.exports = {
+    SpawnMiner: SpawnMiner,
+    SpawnUpgrader: SpawnUpgrader,
+    SpawnFiller: SpawnFiller,
+    SpawnBuilder: SpawnBuilder,
+    SpawnStorageFiller: SpawnStorageFiller
 };
-module.exports = {SpawnMiner: SpawnMiner, SpawnUpgrader: SpawnUpgrader, SpawnFiller: SpawnFiller, SpawnBuilder: SpawnBuilder};
