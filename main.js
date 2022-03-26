@@ -59,7 +59,7 @@ module.exports.loop = function () {
         spawnExtensionFiller = true;
     else if(storageFillers.length < 1 && storages.length !== 0)
         spawnStorageFiller = true;
-    else if (upgraders.length < 1 || currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable)
+    else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && upgraders.length < 3))
         spawnUpgrader = true;
 
     if (spawnMiner) {
