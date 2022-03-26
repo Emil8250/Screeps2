@@ -1,5 +1,6 @@
 var FetchEnergy = {
     FetchEnergy: function (creep, onlyContainers = false) {
+        var storageFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'storageFiller');
         var droppedResources = creep.room.find(FIND_DROPPED_RESOURCES);
         var useContainers = true;
         var storages = creep.room.find(FIND_STRUCTURES, {
@@ -21,8 +22,23 @@ var FetchEnergy = {
             useContainers = false;
         
         if (useContainers) {
-            if (creep.withdraw(storages[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE && creep.store.getFreeCapacity() != 0) {
-                creep.moveTo(storages[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            var takenContainers = [];
+            for (var storageFiller in storageFillers)
+            {
+                if(storageFiller.memory !== undefined)
+                    takenContainers.push(storageFiller.memory.container.id);
+            }
+            for (let i = 0; i < storages.length; i++){
+                
+                if (creep.memory.container === undefined && !takenContainers.includes(storages[i].id))
+                    creep.memory.container = storages[i].id
+            }
+            var currentContainer = storages[0];
+            if (creep.memory.container != null)
+                currentContainer = Game.getObjectById(creep.memory.container);
+            
+            if (creep.withdraw(currentContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE && creep.store.getFreeCapacity() != 0) {
+                creep.moveTo(currentContainer, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         } else if (droppedResources.length > 0) {
             creep.pickup(droppedResources[0]);
