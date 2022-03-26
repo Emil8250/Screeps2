@@ -15,7 +15,6 @@ var miner = {
         }
         
         for (let i = 0; i < containers.length; i++){
-            console.log(creep.memory.container)
             if (creep.memory.container === undefined && !takenContainers.includes(containers[i].id))
                 creep.memory.container = containers[i].id
         }
