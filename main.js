@@ -47,7 +47,7 @@ module.exports.loop = function () {
     var lowContainer;
     if (targets != null)
         lowContainer = _.min(targets, function(container) { return container.hits; });
-    if (miners.length < 1)
+    if (miners.length < 1 || miners.length < targets.length)
         spawnMiner = true;
     /*else if (haulers.length < 1)
         spawnHauler = true;*/
