@@ -57,7 +57,7 @@ module.exports.loop = function () {
         spawnContainerRepairer = true;
     else if(extensionFillers.length < 1)
         spawnExtensionFiller = true;
-    else if(storageFillers.length < 1 && storages.length !== 0)
+    else if(storageFillers.length < 1 && storages.length !== 0 || storageFillers.length < targets.length && storages.length !== 0)
         spawnStorageFiller = true;
     else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && upgraders.length < 3))
         spawnUpgrader = true;
