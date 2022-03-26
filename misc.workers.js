@@ -1,7 +1,9 @@
 var SpawnMiner = {
     SpawnMiner: function (spawn) {
         var energyAvailable = spawn.room.energyAvailable;
-        if (energyAvailable > 651) SpawnWorker(spawn, [WORK, WORK, WORK, WORK, WORK, MOVE], 'miner'); else if (energyAvailable > 451) SpawnWorker(spawn, [WORK, WORK, WORK, WORK, MOVE], 'miner'); else SpawnWorker(spawn, [WORK, WORK, MOVE], 'miner');
+        if (energyAvailable > 651) SpawnWorker(spawn, [WORK, WORK, WORK, WORK, WORK, MOVE], 'miner'); 
+        else if (energyAvailable > 451) SpawnWorker(spawn, [WORK, WORK, WORK, WORK, MOVE], 'miner'); 
+        else SpawnWorker(spawn, [WORK, WORK, MOVE], 'miner');
 
     }
 };

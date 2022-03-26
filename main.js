@@ -120,6 +120,9 @@ module.exports.loop = function () {
             case 'containerRepair':
                 roleContainerRepair.run(creep, targets);
                 break;
+            case 'storageFiller':
+                roleStorageFiller.run(creep);
+                break;
         }
     }
     Memory.stats = {

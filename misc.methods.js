@@ -9,7 +9,7 @@ var FetchEnergy = {
         });
         if (onlyContainers)
             storages.length = 0;
-        if (storages.length === 0)
+        if (storages.length === 0 || storages[0].store.getUsedCapacity() < 1000)
         {
             storages = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
