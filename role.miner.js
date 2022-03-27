@@ -8,12 +8,11 @@ var miner = {
             }
         });
         var takenContainers = [];
-        for (var miner in miners)
+        for (let i = 0; i < miners.length; i++)
         {
-            if(miner.memory !== undefined)
-                takenContainers.push(miner.memory.container.id);
+            if(miners[i].memory.container !== undefined)
+                takenContainers.push(miners[i].memory.container);
         }
-        
         for (let i = 0; i < containers.length; i++){
             if (creep.memory.container === undefined && !takenContainers.includes(containers[i].id))
                 creep.memory.container = containers[i].id

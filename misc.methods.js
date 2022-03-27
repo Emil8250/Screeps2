@@ -26,7 +26,7 @@ var FetchEnergy = {
             for (var storageFiller in storageFillers)
             {
                 if(storageFiller.memory !== undefined)
-                    takenContainers.push(storageFiller.memory.container.id);
+                    takenContainers.push(storageFiller.memory.container);
             }
             for (let i = 0; i < storages.length; i++){
                 
