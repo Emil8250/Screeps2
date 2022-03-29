@@ -7,6 +7,7 @@ var buildContainers = require('build.containers');
 var roleContainerRepair = require('role.containerRepair');
 var roleExtensionFiller = require('role.extionsionFiller');
 var roleStorageFiller = require('role.storageFiller');
+var roleTowerFiller = require('role.towerFiller');
 var miscWorker = require('misc.workers');
 var buildConstructions = require('build.constructions')
 
@@ -32,6 +33,8 @@ module.exports.loop = function () {
     var spawnExtensionFiller = false;
     var storageFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'storageFiller');
     var spawnStorageFiller = false;
+    var towerFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'towerFiller');
+    var spawnTowerFiller = false;
 
     var storages = currentSpawn.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
@@ -39,6 +42,15 @@ module.exports.loop = function () {
         }
     });
     
+    var towers = currentSpawn.room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_TOWER);
+        }
+    });
+    var hostiles = currentSpawn.room.find(FIND_HOSTILE_CREEPS);
+    if(hostiles.length > 0 && towers.length > 0) {
+        towers.forEach(tower => tower.attack(hostiles[0]));
+    }
     var targets = currentSpawn.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
             return (structure.structureType == STRUCTURE_CONTAINER);
@@ -59,6 +71,8 @@ module.exports.loop = function () {
         spawnExtensionFiller = true;
     else if(storageFillers.length < 1 && storages.length !== 0 || storageFillers.length < targets.length && storages.length !== 0)
         spawnStorageFiller = true;
+    else if(towerFillers.length < 1 && towers.length !== 0)
+        spawnTowerFiller = true;
     else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && upgraders.length < 2))
         spawnUpgrader = true;
 
@@ -94,10 +108,12 @@ module.exports.loop = function () {
     }
     if (spawnStorageFiller)
         miscWorker.SpawnStorageFiller.SpawnStorageFiller(currentSpawn);
-        
+    if (spawnTowerFiller)
+        miscWorker.SpawnTowerFiller.SpawnTowerFiller(currentSpawn);
     buildExtensions.run(currentSpawn.room.name);
     buildContainers.run(currentSpawn.room);
     buildConstructions.storage(currentSpawn);
+    buildConstructions.tower(currentSpawn);
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
 
@@ -122,6 +138,9 @@ module.exports.loop = function () {
                 break;
             case 'storageFiller':
                 roleStorageFiller.run(creep);
+                break;
+            case 'towerFiller':
+                roleTowerFiller.run(creep)
                 break;
         }
     }
