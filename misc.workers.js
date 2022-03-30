@@ -80,13 +80,7 @@ var SpawnStorageFiller = {
 var SpawnTowerFiller = {
     SpawnTowerFiller: function (spawn) {
         var role = 'towerFiller';
-        var energyAvailable = spawn.room.energyAvailable;
-        if (energyAvailable > 601) 
-            SpawnWorker(spawn, [WORK, CARRY, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role); 
-        else if (energyAvailable > 501) 
-            SpawnWorker(spawn, [WORK, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role); 
-        else 
-            SpawnWorker(spawn, [WORK, CARRY, CARRY, CARRY, MOVE], role);
+        SpawnWorker(spawn, [WORK, CARRY, CARRY, CARRY, MOVE], role);
     }
 }
 

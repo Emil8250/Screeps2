@@ -71,7 +71,7 @@ module.exports.loop = function () {
         spawnExtensionFiller = true;
     else if(storageFillers.length < 1 && storages.length !== 0 || storageFillers.length < targets.length && storages.length !== 0)
         spawnStorageFiller = true;
-    else if(towerFillers.length < 1 && towers.length !== 0)
+    else if(towerFillers.length < 1 && towers.length !== 0 && towers[0].store.getFreeCapacity(RESOURCE_ENERGY) !== 0)
         spawnTowerFiller = true;
     else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && upgraders.length < 2))
         spawnUpgrader = true;
