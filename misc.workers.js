@@ -15,7 +15,9 @@ var SpawnUpgrader = {
     SpawnUpgrader: function (spawn) {
         var role = 'upgrader';
         var energyAvailable = spawn.room.energyAvailable;
-        if (energyAvailable > 851) 
+        if (energyAvailable > 1299) 
+            SpawnWorker(spawn, [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], role); 
+        else if (energyAvailable > 851) 
             SpawnWorker(spawn, [WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role); 
         else if (energyAvailable > 751) 
             SpawnWorker(spawn, [WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role); 
