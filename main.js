@@ -47,6 +47,11 @@ module.exports.loop = function () {
             return (structure.structureType == STRUCTURE_TOWER);
         }
     });
+    var controllers = currentSpawn.room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_CONTROLLER);
+        }
+    });
     var hostiles = currentSpawn.room.find(FIND_HOSTILE_CREEPS);
     if(hostiles.length > 0 && towers.length > 0) {
         towers.forEach(tower => tower.attack(hostiles[0]));
@@ -114,6 +119,7 @@ module.exports.loop = function () {
     buildContainers.run(currentSpawn.room);
     buildConstructions.storage(currentSpawn);
     buildConstructions.tower(currentSpawn);
+    //buildConstructions.road(currentSpawn, storages[0].pos, controllers[0]);
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
 
