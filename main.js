@@ -155,5 +155,6 @@ module.exports.loop = function () {
         GCLNext: Game.gcl.progressTotal,
         Miners: miners.length,
         Upgraders: upgraders.length,
+        StorageEnergy: storages[0].store.getUsedCapacity()
     };
 }
