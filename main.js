@@ -166,7 +166,7 @@ module.exports.loop = function () {
                 roleTowerFiller.run(creep)
                 break;
             case 'roadRepair':
-                roleRoadRepair.run(creep)
+                roleRoadRepair.run(creep, roads)
                 break;
         }
     }

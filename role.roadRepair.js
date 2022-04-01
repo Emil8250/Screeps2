@@ -2,8 +2,10 @@ var misc = require('misc.methods');
 var roadRepair = {
     run: function (creep, targets) {
         var lowRoad = _.min(targets, function(road) { return road.hits; });
+        console.log(lowRoad);
         if(!creep.memory.road)
             creep.memory.road = lowRoad.id;
+        
         var currentRoad = Game.getObjectById(creep.memory.road);
         if(currentRoad.hits == currentRoad.hitsMax)
         {
@@ -14,7 +16,7 @@ var roadRepair = {
         {
             misc.FetchEnergy(creep);
         }
-        if(creep.repair(currentContainer) == ERR_NOT_IN_RANGE) {
+        if(creep.repair(currentRoad) == ERR_NOT_IN_RANGE) {
             creep.moveTo(currentContainer, {visualizePathStyle: {stroke: '#ffaa00'}});
         }
     }
