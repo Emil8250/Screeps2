@@ -92,6 +92,7 @@ module.exports.loop = function () {
     else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && upgraders.length < 2))
         spawnUpgrader = true;
 
+        
     if (spawnMiner) {
         miscWorker.SpawnMiner.SpawnMiner(currentSpawn);
     }
@@ -104,6 +105,8 @@ module.exports.loop = function () {
                 }
             });
     }
+    if(spawnRoadRepair)
+        miscWorker.SpawnRoadRepair.SpawnRoadRepair(currentSpawn);
     if (spawnUpgrader) {
         miscWorker.SpawnUpgrader.SpawnUpgrader(currentSpawn);
     }

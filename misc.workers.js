@@ -65,7 +65,7 @@ var SpawnBuilder = {
 }
 
 var SpawnRoadRepair = {
-    SpawnBuilder: function (spawn) {
+    SpawnRoadRepair: function (spawn) {
         var role = 'roadRepair';
         var energyAvailable = spawn.room.energyAvailable;
         if (energyAvailable > 601) 
