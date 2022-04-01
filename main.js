@@ -8,6 +8,7 @@ var roleContainerRepair = require('role.containerRepair');
 var roleExtensionFiller = require('role.extionsionFiller');
 var roleStorageFiller = require('role.storageFiller');
 var roleTowerFiller = require('role.towerFiller');
+var roleRoadRepair = require('role.roadRepair');
 var miscWorker = require('misc.workers');
 var buildConstructions = require('build.constructions')
 
@@ -35,6 +36,8 @@ module.exports.loop = function () {
     var spawnStorageFiller = false;
     var towerFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'towerFiller');
     var spawnTowerFiller = false;
+    var roadRepair = _.filter(Game.creeps, (creep) => creep.memory.role == 'roadRepair');
+    var spawnRoadRepair = false;
 
     var storages = currentSpawn.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
@@ -61,6 +64,12 @@ module.exports.loop = function () {
             return (structure.structureType == STRUCTURE_CONTAINER);
         }
     });
+    var roads = currentSpawn.room.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return (structure.structureType == STRUCTURE_ROAD);
+        }
+    });
+
     var lowContainer;
     if (targets != null)
         lowContainer = _.min(targets, function(container) { return container.hits; });
@@ -78,6 +87,8 @@ module.exports.loop = function () {
         spawnStorageFiller = true;
     else if(towerFillers.length < 1 && towers.length !== 0 && towers[0].store.getFreeCapacity(RESOURCE_ENERGY) !== 0)
         spawnTowerFiller = true;
+    else if(roadRepair.length < 1 && roads.length !== 0 )
+        spawnRoadRepair = true;
     else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && upgraders.length < 2))
         spawnUpgrader = true;
 
@@ -147,6 +158,9 @@ module.exports.loop = function () {
                 break;
             case 'towerFiller':
                 roleTowerFiller.run(creep)
+                break;
+            case 'roadRepair':
+                roleRoadRepair.run(creep)
                 break;
         }
     }

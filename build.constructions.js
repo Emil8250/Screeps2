@@ -16,7 +16,6 @@ var build = {
         });
         for (let i = 0; i < path.length; i++) {
             Game.rooms[spawn.room.name].createConstructionSite(path[i].x, path[i].y, STRUCTURE_ROAD, 'road' + Game.time);
-            //TODO: Construct road
         }
       }
 };
