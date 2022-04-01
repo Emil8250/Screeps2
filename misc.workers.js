@@ -51,7 +51,11 @@ var SpawnBuilder = {
     SpawnBuilder: function (spawn) {
         var role = 'builder';
         var energyAvailable = spawn.room.energyAvailable;
-        if (energyAvailable > 601) 
+        if(energyAvailable >= 1300)
+            SpawnWorker(spawn, [WORK, WORK,WORK,WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], role); 
+        else if (energyAvailable > 1001) 
+            SpawnWorker(spawn, [WORK, WORK,WORK,WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], role); 
+        else if (energyAvailable > 601) 
             SpawnWorker(spawn, [WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], role); 
         else if (energyAvailable > 501) 
             SpawnWorker(spawn, [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], role); 
@@ -77,16 +81,16 @@ var SpawnStorageFiller = {
     SpawnStorageFiller: function (spawn) {
         var role = 'storageFiller';
         var energyAvailable = spawn.room.energyAvailable;
-        if(energyAvailable === 1300)
-            SpawnWorker(spawn, [WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], role);
+        if(energyAvailable >= 1300)
+            SpawnWorker(spawn, [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], role);
         else if(energyAvailable > 1001)
-            SpawnWorker(spawn, [WORK, CARRY, CARRY,CARRY, CARRY,CARRY, CARRY,CARRY, CARRY,CARRY, CARRY,CARRY, CARRY,CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], role);
+            SpawnWorker(spawn, [CARRY, CARRY, CARRY, CARRY,CARRY, CARRY,CARRY, CARRY,CARRY, CARRY,CARRY, CARRY,CARRY, CARRY,CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], role);
         else if (energyAvailable > 601) 
-            SpawnWorker(spawn, [WORK, CARRY, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role); 
+            SpawnWorker(spawn, [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role); 
         else if (energyAvailable > 501) 
-            SpawnWorker(spawn, [WORK, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role); 
+            SpawnWorker(spawn, [CARRY, CARRY, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role); 
         else 
-            SpawnWorker(spawn, [WORK, CARRY, CARRY, CARRY, MOVE], role);
+            SpawnWorker(spawn, [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role);
     }
 }
 
@@ -112,5 +116,6 @@ module.exports = {
     SpawnFiller: SpawnFiller,
     SpawnBuilder: SpawnBuilder,
     SpawnStorageFiller: SpawnStorageFiller,
-    SpawnTowerFiller:SpawnTowerFiller
+    SpawnTowerFiller:SpawnTowerFiller,
+    SpawnRoadRepair:SpawnRoadRepair
 };
