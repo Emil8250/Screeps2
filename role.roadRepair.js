@@ -2,7 +2,6 @@ var misc = require('misc.methods');
 var roadRepair = {
     run: function (creep, targets) {
         var lowRoad = _.min(targets, function(road) { return road.hits; });
-        console.log(lowRoad);
         if(!creep.memory.road)
             creep.memory.road = lowRoad.id;
         
