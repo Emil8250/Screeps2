@@ -130,7 +130,10 @@ module.exports.loop = function () {
     buildContainers.run(currentSpawn.room);
     buildConstructions.storage(currentSpawn);
     buildConstructions.tower(currentSpawn);
-    //buildConstructions.road(currentSpawn, storages[0].pos, controllers[0]);
+    buildConstructions.road(currentSpawn, storages[0].pos, controllers[0]);
+    for (let i = 0; i < targets.length; i++) {
+        buildConstructions.road(currentSpawn, storages[0].pos, targets[i]);
+    }
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
 
