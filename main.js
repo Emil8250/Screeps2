@@ -89,7 +89,7 @@ module.exports.loop = function () {
         spawnTowerFiller = true;
     else if(roadRepair.length < 1 && roads.length !== 0 )
         spawnRoadRepair = true;
-    else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && upgraders.length < 2))
+    else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && upgraders.length < 2 && builders.length === 0))
         spawnUpgrader = true;
 
         
