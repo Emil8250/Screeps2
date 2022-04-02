@@ -16,7 +16,7 @@ var roadRepair = {
             misc.FetchEnergy(creep);
         }
         if(creep.repair(currentRoad) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(currentContainer, {visualizePathStyle: {stroke: '#ffaa00'}});
+            creep.moveTo(currentRoad, {visualizePathStyle: {stroke: '#ffaa00'}});
         }
     }
 };
