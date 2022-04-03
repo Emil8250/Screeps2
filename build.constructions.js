@@ -14,7 +14,7 @@ var build = {
             ignoreRoads: true,
             swampCost: 1
         });
-        for (let i = 0; i < path.length; i++) {
+        for (let i = 0; i < path.length - 1; i++) {
             Game.rooms[spawn.room.name].createConstructionSite(path[i].x, path[i].y, STRUCTURE_ROAD, 'road' + Game.time);
         }
       }
