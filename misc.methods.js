@@ -28,7 +28,6 @@ var FetchEnergy = {
                 if(storageFillers[i].memory.container !== undefined)
                     takenContainers.push(storageFillers[i].memory.container);
             }
-            console.log(takenContainers);
             for (let i = 0; i < storages.length; i++){
                 if (creep.memory.container === undefined && !takenContainers.includes(storages[i].id))
                     creep.memory.container = storages[i].id
