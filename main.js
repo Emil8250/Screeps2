@@ -1,7 +1,6 @@
-var roleMiner = require('role.miner');
+var role = require('role');
 var roleHauler = require('role.hauler');
 var roleUpgrader = require('role.upgrader')
-var roleBuilder = require('role.builder')
 var buildExtensions = require('build.extensions');
 var buildContainers = require('build.containers');
 var roleContainerRepair = require('role.containerRepair');
@@ -142,7 +141,7 @@ module.exports.loop = function () {
 
         switch (creep.memory.role) {
             case 'miner':
-                roleMiner.run(creep);
+                role.Miner(creep);
                 break;
             case 'hauler':
                 roleHauler.run(creep);
@@ -151,7 +150,7 @@ module.exports.loop = function () {
                 roleUpgrader.run(creep);
                 break;
             case 'builder':
-                roleBuilder.run(creep);
+                role.Builder(creep);
                 break;
             case 'extensionFiller':
                 roleExtensionFiller.run(creep);
@@ -166,7 +165,7 @@ module.exports.loop = function () {
                 roleTowerFiller.run(creep)
                 break;
             case 'roadRepair':
-                roleRoadRepair.run(creep, roads)
+                role.RoadRepair(creep, roads)
                 break;
         }
     }
