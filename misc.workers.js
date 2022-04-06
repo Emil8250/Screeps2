@@ -1,3 +1,4 @@
+var miscMethods = require('misc.methods');
 var SpawnMiner = {
     SpawnMiner: function (spawn) {
         var energyAvailable = spawn.room.energyAvailable;
@@ -78,9 +79,11 @@ var SpawnRoadRepair = {
 }
 
 var SpawnStorageFiller = {
-    SpawnStorageFiller: function (spawn) {
+    SpawnStorageFiller: function (spawn, miners, extensionFillers) {
         var role = 'storageFiller';
         var energyAvailable = spawn.room.energyAvailable;
+        if(!miscMethods.ShouldSpawn(1300, miners, extensionFillers, spawn))
+            return;
         if(energyAvailable >= 1300)
             SpawnWorker(spawn, [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], role);
         else if(energyAvailable > 1001)

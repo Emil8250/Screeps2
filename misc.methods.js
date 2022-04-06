@@ -60,6 +60,9 @@ var FetchEnergy = {
             return new RoomPosition(relativePos.x, relativePos.y + 1, room.name);
         else if (canBePlacedRight)
             return new RoomPosition(relativePos.x + 1, relativePos.y, room.name);
+    },
+    ShouldSpawn: function (creepCost, miners, extensionFillers, spawn){
+        return ((spawn.room.energyAvailable == spawn.room.energyCapacityAvailable || spawn.room.energyAvailable >= creepCost) && miners > 0 && extensionFillers > 0)
     }
 };
 module.exports = FetchEnergy;

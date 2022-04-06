@@ -125,7 +125,7 @@ module.exports.loop = function () {
         miscWorker.SpawnFiller.SpawnFiller(currentSpawn);
     }
     if (spawnStorageFiller)
-        miscWorker.SpawnStorageFiller.SpawnStorageFiller(currentSpawn);
+        miscWorker.SpawnStorageFiller.SpawnStorageFiller(currentSpawn, miners.length, extensionFillers.length);
     if (spawnTowerFiller)
         miscWorker.SpawnTowerFiller.SpawnTowerFiller(currentSpawn);
     buildExtensions.run(currentSpawn.room.name);
