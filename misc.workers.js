@@ -16,7 +16,9 @@ var SpawnUpgrader = {
     SpawnUpgrader: function (spawn) {
         var role = 'upgrader';
         var energyAvailable = spawn.room.energyAvailable;
-        if (energyAvailable >= 1800) 
+        if(energyAvailable >= 2300)
+            SpawnWorker(spawn, [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], role); 
+        else if (energyAvailable >= 1800) 
             SpawnWorker(spawn, [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], role); 
         else if (energyAvailable >= 1300)
             SpawnWorker(spawn, [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], role); 
@@ -39,6 +41,8 @@ var SpawnFiller = {
     SpawnFiller: function (spawn) {
         var role = 'extensionFiller';
         var energyAvailable = spawn.room.energyAvailable;
+        if(energyAvailable >= 1000)
+            SpawnWorker(spawn, [WORK, CARRY, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], role);
         if (energyAvailable > 701) 
             SpawnWorker(spawn, [WORK, CARRY, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], role);
         else if (energyAvailable > 601) 
