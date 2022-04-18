@@ -71,13 +71,11 @@ module.exports.loop = function () {
             lowContainer = _.min(targets, function(container) { return container.hits; });
         if (miners.length < 1 || miners.length < targets.length)
             spawnMiner = true;
-        /*else if (haulers.length < 1)
-            spawnHauler = true;*/
         else if (builders.length < 1 && currentSpawn.room.find(FIND_CONSTRUCTION_SITES).length > 0)
             spawnBuilder = true;
         else if(containerRepairers.length < 1 && lowContainer != null && lowContainer.hits < 100000)
             spawnContainerRepairer = true;
-        else if(extensionFillers.length < 1)
+        else if(extensionFillers.length < 1 || (storages.length > 0 && storages[0].store.getUsedCapacity() > 100000 && extensionFillers.length < 2))
             spawnExtensionFiller = true;
         else if(storageFillers.length < 1 && storages.length !== 0 || storageFillers.length < targets.length && storages.length !== 0)
             spawnStorageFiller = true;
