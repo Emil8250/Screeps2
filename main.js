@@ -7,7 +7,6 @@ var roleContainerRepair = require('role.containerRepair');
 var roleExtensionFiller = require('role.extionsionFiller');
 var roleStorageFiller = require('role.storageFiller');
 var roleTowerFiller = require('role.towerFiller');
-var roleRoadRepair = require('role.roadRepair');
 var miscWorker = require('misc.workers');
 var buildConstructions = require('build.constructions')
 
