@@ -39,7 +39,7 @@ module.exports.loop = function () {
                 return (structure.structureType == STRUCTURE_STORAGE);
             }
         });
-        
+
         var towers = currentSpawn.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_TOWER);
@@ -85,7 +85,7 @@ module.exports.loop = function () {
         else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && (upgraders.length < 2 || storages[0].store.getUsedCapacity() > 100000 && upgraders.length < 4) && builders.length === 0))
             spawnUpgrader = true;
 
-            
+
         if (spawnMiner) {
             miscWorker.SpawnMiner.SpawnMiner(currentSpawn);
         }
@@ -176,5 +176,51 @@ module.exports.loop = function () {
             Upgraders: upgraders.length,
             StorageEnergy: storages[0].store.getUsedCapacity()
         };
+        var counter = {i:0};
+        var test =  {x:currentSpawn.pos.x + 7 , y: currentSpawn.pos.y + 3};
+        var test2 =  {x:currentSpawn.pos.x , y: currentSpawn.pos.y + 13};
+        var test3 =  {x:currentSpawn.pos.x, y: currentSpawn.pos.y + 3};
+        drawExtensions(3, 10, currentSpawn, currentSpawn.pos, counter)
+        drawExtensions(10, 3, currentSpawn, test, counter);
+        drawExtensions(3, 10, currentSpawn, test2, counter);
+        drawExtensions(10, 3, currentSpawn, test3, counter);
+        var test4 =  {x:currentSpawn.pos.x + 3, y: currentSpawn.pos.y + 3};
+        var test5 =  {x:currentSpawn.pos.x + 7, y: currentSpawn.pos.y + 12};
+        drawRoads(10, 4, test4, test5, currentSpawn);
+    }
+}
+
+function drawExtensions(width, height, spawn, corner, counter){
+    var ignoreX = spawn.pos.x + 4;
+    var ignoreY = spawn.pos.y + 7;
+    for (let i = 0; i < width; i++) {
+        for (let j = 0; j < height; j++) {
+            var isOnRoad = corner.x + j == ignoreX || corner.y + i == ignoreY;
+            var isBothEven = i % 2 === 1 && j % 2 === 0;
+            var isBothOdd = i % 2 === 0 && j % 2 === 1;
+            var isCoordsFree = spawn.room.lookForAt(LOOK_STRUCTURES, corner.x + j, corner.y + i).length === 0;
+            if(isOnRoad)
+                spawn.room.visual.circle(corner.x + j,corner.y + i, {stroke: 'red'});
+            if ((isBothOdd || isBothEven ) && isCoordsFree)
+            {
+                if(isOnRoad)
+                    continue;
+                spawn.room.visual.circle(corner.x + j,corner.y + i,  {stroke: 'yellow'})
+                counter.i = counter.i + 1;
+            }
+
+        }
+    }
+
+}
+function drawRoads(height, width, topCorner, bottomCorner, spawn){
+
+
+    for (let i = 0; i < width; i++) {
+        spawn.room.visual.circle(topCorner.x + i, topCorner.y, {stroke: 'red'});
+        spawn.room.visual.circle(topCorner.x + i, topCorner.y + 35, {stroke: 'red'});
+    }
+    for (let i = 0; i < height; i++) {
+        spawn.room.visual.circle(topCorner.x, topCorner.y + i, {stroke: 'red'});
     }
 }
