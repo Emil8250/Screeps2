@@ -176,17 +176,18 @@ module.exports.loop = function () {
             Upgraders: upgraders.length,
             StorageEnergy: storages[0].store.getUsedCapacity()
         };
-        var counter = {i:0};
-        var test =  {x:currentSpawn.pos.x + 7 , y: currentSpawn.pos.y + 3};
-        var test2 =  {x:currentSpawn.pos.x , y: currentSpawn.pos.y + 13};
-        var test3 =  {x:currentSpawn.pos.x, y: currentSpawn.pos.y + 3};
-        drawExtensions(3, 10, currentSpawn, currentSpawn.pos, counter)
-        drawExtensions(10, 3, currentSpawn, test, counter);
-        drawExtensions(3, 10, currentSpawn, test2, counter);
-        drawExtensions(10, 3, currentSpawn, test3, counter);
-        var test4 =  {x:currentSpawn.pos.x + 3, y: currentSpawn.pos.y + 3};
-        var test5 =  {x:currentSpawn.pos.x + 7, y: currentSpawn.pos.y + 12};
-        drawRoads(10, 4, test4, test5, currentSpawn);
+        /*    var counter = {i:0};
+            var test =  {x:currentSpawn.pos.x + 7 , y: currentSpawn.pos.y + 3};
+            var test2 =  {x:currentSpawn.pos.x , y: currentSpawn.pos.y + 13};
+            var test3 =  {x:currentSpawn.pos.x, y: currentSpawn.pos.y + 3};
+            drawExtensions(3, 10, currentSpawn, currentSpawn.pos, counter)
+            drawExtensions(10, 3, currentSpawn, test, counter);
+            drawExtensions(3, 10, currentSpawn, test2, counter);
+            drawExtensions(10, 3, currentSpawn, test3, counter);
+            //drawRoads(10, 16, currentSpawn);
+            var test4 =  {x:currentSpawn.pos.x + 3, y: currentSpawn.pos.y + 3};
+            var test5 =  {x:currentSpawn.pos.x + 7, y: currentSpawn.pos.y + 12};
+            drawRoads(10, 4, test4, test5, currentSpawn);*/
     }
 }
 
@@ -218,9 +219,12 @@ function drawRoads(height, width, topCorner, bottomCorner, spawn){
 
     for (let i = 0; i < width; i++) {
         spawn.room.visual.circle(topCorner.x + i, topCorner.y, {stroke: 'red'});
-        spawn.room.visual.circle(topCorner.x + i, topCorner.y + 35, {stroke: 'red'});
+        spawn.room.visual.circle(topCorner.x + i, topCorner.y + bottomCorner.y, {stroke: 'red'});
     }
     for (let i = 0; i < height; i++) {
         spawn.room.visual.circle(topCorner.x, topCorner.y + i, {stroke: 'red'});
+        // var isOnRoad = topCorner.x == topCorner || spawn.pos.y == roadsY;
+        //if(isOnRoad)
+        //spawn.room.visual.circle(spawn.pos.x + j,spawn.pos.y + i, {stroke: 'red'});
     }
 }
