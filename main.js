@@ -11,6 +11,15 @@ var miscWorker = require('misc.workers');
 var buildConstructions = require('build.constructions')
 
 module.exports.loop = function () {
+    var ControllerProgress;
+    var UsedCpu;
+    var RCL;
+    var RCLCurrent;
+    var RCLNext;
+    var Miners;
+    var Upgraders;
+    var StorageEnergy;
+    
     for (var spawn in Game.spawns) {
         var currentSpawn = Game.spawns[spawn];
         if (Game.cpu.bucket > 9999)
@@ -85,7 +94,19 @@ module.exports.loop = function () {
         else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && (upgraders.length < 2 || storages[0].store.getUsedCapacity() > 100000 && upgraders.length < 4) && builders.length === 0))
             spawnUpgrader = true;
 
-
+        
+        var roomFlag = "";
+        for(var flag in Game.flags) {
+            if(Game.flags[flag].color == COLOR_GREEN){
+                roomFlag = JSON.stringify(Game.flags[flag].name);
+            }
+        }
+        
+        if(roomFlag !== "")
+            miscWorker.SpawnRoomer.SpawnRoomer(currentSpawn);
+        if(Game.time % 1500 === 0){
+            //miscWorker.SpawnExternalBuilder.SpawnExternalBuilder(currentSpawn);
+        }
         if (spawnMiner) {
             miscWorker.SpawnMiner.SpawnMiner(currentSpawn);
         }
@@ -137,8 +158,8 @@ module.exports.loop = function () {
                 case 'miner':
                     role.Miner(creep);
                     break;
-                case 'hauler':
-                    roleHauler.run(creep);
+                case 'roomer':
+                    role.Roomer(creep, roomFlag);
                     break;
                 case 'upgrader':
                     roleUpgrader.run(creep);
@@ -170,19 +191,27 @@ module.exports.loop = function () {
         buildExtensions.buildBase(10, 3, currentSpawn, test);
         buildExtensions.buildBase(3, 10, currentSpawn, test2);
         buildExtensions.buildBase(10, 3, currentSpawn, test3);
+        ControllerProgress += currentSpawn.room.controller.progress;
+        RCL += currentSpawn.room.controller.level;
+        RCLCurrent += currentSpawn.room.controller.progress;
+        RCLNext += currentSpawn.room.controller.progressTotal;
+        Miners += miners.length;
+        Upgraders += upgraders.length;
+        if(storages)
+            StorageEnergy += storages[0].store.getUsedCapacity()
         
-        Memory.stats = {
-            ControllerProgress: Game.spawns.Spawn1.room.controller.progress,
-            UsedCpu: Game.cpu.getUsed(),
-            RCL: Game.spawns.Spawn1.room.controller.level,
-            RCLCurrent: Game.spawns.Spawn1.room.controller.progress,
-            RCLNext: Game.spawns.Spawn1.room.controller.progressTotal,
-            GCL: Game.gcl.level,
-            GCLCurrent: Game.gcl.progress,
-            GCLNext: Game.gcl.progressTotal,
-            Miners: miners.length,
-            Upgraders: upgraders.length,
-            StorageEnergy: storages[0].store.getUsedCapacity()
-        };
     }
+    Memory.stats = {
+        ControllerProgress: ControllerProgress,
+        UsedCpu: Game.cpu.getUsed(),
+        RCL: RCL,
+        RCLCurrent: RCLCurrent,
+        RCLNext: RCLNext,
+        GCL: Game.gcl.level,
+        GCLCurrent: Game.gcl.progress,
+        GCLNext: Game.gcl.progressTotal,
+        Miners: Miners,
+        Upgraders: Upgraders,
+        StorageEnergy: StorageEnergy
+    };
 }

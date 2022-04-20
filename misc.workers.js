@@ -111,6 +111,17 @@ var SpawnTowerFiller = {
         SpawnWorker(spawn, [WORK, CARRY, CARRY, CARRY, MOVE], role);
     }
 }
+var SpawnRoomer = {
+    SpawnRoomer: function (spawn) {
+        var role = 'roomer';
+        SpawnWorker(spawn, [MOVE, CLAIM], role);
+    }
+}
+
+var SpawnExternalBuilder = function SpawnExternalBuilder(){
+    var role = 'externalBuilder';
+    SpawnWorker(spawn, [MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY], role);
+}
 
 function SpawnWorker(spawn, worker, role) {
     var newName = role + Game.time;
@@ -128,5 +139,7 @@ module.exports = {
     SpawnBuilder: SpawnBuilder,
     SpawnStorageFiller: SpawnStorageFiller,
     SpawnTowerFiller:SpawnTowerFiller,
-    SpawnRoadRepair:SpawnRoadRepair
+    SpawnRoadRepair:SpawnRoadRepair,
+    SpawnRoomer:SpawnRoomer,
+    SpawnExternalBuilder
 };

@@ -48,6 +48,25 @@ var Role = {
         } else
             misc.FetchEnergy(creep);
     },
+    Roomer: function(creep, roomFlag) {
+        if(creep.memory.findRoom === undefined || creep.memory.findRoom === "")
+            creep.memory.findRoom = roomFlag;
+        
+        const exitDir = creep.room.findExitTo("E32N41");
+        const exit = creep.pos.findClosestByRange(exitDir);
+        
+        if(Game.rooms["E32N41"] !== undefined){
+            var controllers = Game.rooms["E32N41"].find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return (structure.structureType == STRUCTURE_CONTROLLER);
+                }
+            });
+            console.log(JSON.stringify(controllers[0]));
+            creep.moveTo(controllers[0])
+            console.log(creep.claimController(controllers[0]));
+        }
+        creep.moveTo(exit);
+    },
     RoadRepair: function (creep, targets) {
         var lowRoad = _.min(targets, function(road) { return road.hits; });
         if(!creep.memory.road)
