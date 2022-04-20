@@ -163,6 +163,14 @@ module.exports.loop = function () {
                     break;
             }
         }
+        var test =  {x:currentSpawn.pos.x + 7 , y: currentSpawn.pos.y + 3};
+        var test2 =  {x:currentSpawn.pos.x , y: currentSpawn.pos.y + 13};
+        var test3 =  {x:currentSpawn.pos.x, y: currentSpawn.pos.y + 3};
+        buildExtensions.buildBase(3, 10, currentSpawn, currentSpawn.pos);
+        buildExtensions.buildBase(10, 3, currentSpawn, test);
+        buildExtensions.buildBase(3, 10, currentSpawn, test2);
+        buildExtensions.buildBase(10, 3, currentSpawn, test3);
+        
         Memory.stats = {
             ControllerProgress: Game.spawns.Spawn1.room.controller.progress,
             UsedCpu: Game.cpu.getUsed(),
@@ -176,55 +184,5 @@ module.exports.loop = function () {
             Upgraders: upgraders.length,
             StorageEnergy: storages[0].store.getUsedCapacity()
         };
-        /*    var counter = {i:0};
-            var test =  {x:currentSpawn.pos.x + 7 , y: currentSpawn.pos.y + 3};
-            var test2 =  {x:currentSpawn.pos.x , y: currentSpawn.pos.y + 13};
-            var test3 =  {x:currentSpawn.pos.x, y: currentSpawn.pos.y + 3};
-            drawExtensions(3, 10, currentSpawn, currentSpawn.pos, counter)
-            drawExtensions(10, 3, currentSpawn, test, counter);
-            drawExtensions(3, 10, currentSpawn, test2, counter);
-            drawExtensions(10, 3, currentSpawn, test3, counter);
-            //drawRoads(10, 16, currentSpawn);
-            var test4 =  {x:currentSpawn.pos.x + 3, y: currentSpawn.pos.y + 3};
-            var test5 =  {x:currentSpawn.pos.x + 7, y: currentSpawn.pos.y + 12};
-            drawRoads(10, 4, test4, test5, currentSpawn);*/
-    }
-}
-
-function drawExtensions(width, height, spawn, corner, counter){
-    var ignoreX = spawn.pos.x + 4;
-    var ignoreY = spawn.pos.y + 7;
-    for (let i = 0; i < width; i++) {
-        for (let j = 0; j < height; j++) {
-            var isOnRoad = corner.x + j == ignoreX || corner.y + i == ignoreY;
-            var isBothEven = i % 2 === 1 && j % 2 === 0;
-            var isBothOdd = i % 2 === 0 && j % 2 === 1;
-            var isCoordsFree = spawn.room.lookForAt(LOOK_STRUCTURES, corner.x + j, corner.y + i).length === 0;
-            if(isOnRoad)
-                spawn.room.visual.circle(corner.x + j,corner.y + i, {stroke: 'red'});
-            if ((isBothOdd || isBothEven ) && isCoordsFree)
-            {
-                if(isOnRoad)
-                    continue;
-                spawn.room.visual.circle(corner.x + j,corner.y + i,  {stroke: 'yellow'})
-                counter.i = counter.i + 1;
-            }
-
-        }
-    }
-
-}
-function drawRoads(height, width, topCorner, bottomCorner, spawn){
-
-
-    for (let i = 0; i < width; i++) {
-        spawn.room.visual.circle(topCorner.x + i, topCorner.y, {stroke: 'red'});
-        spawn.room.visual.circle(topCorner.x + i, topCorner.y + bottomCorner.y, {stroke: 'red'});
-    }
-    for (let i = 0; i < height; i++) {
-        spawn.room.visual.circle(topCorner.x, topCorner.y + i, {stroke: 'red'});
-        // var isOnRoad = topCorner.x == topCorner || spawn.pos.y == roadsY;
-        //if(isOnRoad)
-        //spawn.room.visual.circle(spawn.pos.x + j,spawn.pos.y + i, {stroke: 'red'});
     }
 }
