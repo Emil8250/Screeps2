@@ -9,16 +9,17 @@ var roleStorageFiller = require('role.storageFiller');
 var roleTowerFiller = require('role.towerFiller');
 var miscWorker = require('misc.workers');
 var buildConstructions = require('build.constructions')
+const {SpawnExternalBuilder} = require("./misc.workers");
 
 module.exports.loop = function () {
     var ControllerProgress;
-    var UsedCpu;
     var RCL;
     var RCLCurrent;
     var RCLNext;
     var Miners;
     var Upgraders;
     var StorageEnergy;
+    var totalExternalBuilders = 0;
     
     for (var spawn in Game.spawns) {
         var currentSpawn = Game.spawns[spawn];
@@ -26,7 +27,7 @@ module.exports.loop = function () {
             Game.cpu.generatePixel();
         var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
         var spawnMiner = false;
-        var haulers = _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler');
+        var externalBuilders = _.filter(Game.creeps, (creep) => creep.memory.role == 'externalBuilder');
         var spawnHauler = false;
         var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
         var spawnUpgrader = false;
@@ -42,7 +43,9 @@ module.exports.loop = function () {
         var spawnTowerFiller = false;
         var roadRepair = _.filter(Game.creeps, (creep) => creep.memory.role == 'roadRepair');
         var spawnRoadRepair = false;
-
+        var spawnExternalBuider = false;
+        var externalUpgrader= _.filter(Game.creeps, (creep) => creep.memory.role == 'externalUpgrader');
+        var spawnExternalUpgrader = false;
         var storages = currentSpawn.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_STORAGE);
@@ -87,6 +90,10 @@ module.exports.loop = function () {
             spawnExtensionFiller = true;
         else if(storageFillers.length < 1 && storages.length !== 0 || storageFillers.length < targets.length && storages.length !== 0)
             spawnStorageFiller = true;
+        else if(externalBuilders.length < 3)
+            spawnExternalBuider = true;
+        else if(externalUpgrader.length < 1)
+            spawnExternalUpgrader = true;
         else if(towerFillers.length < 1 && towers.length !== 0 && towers[0].store.getFreeCapacity(RESOURCE_ENERGY) !== 0)
             spawnTowerFiller = true;
         else if(roadRepair.length < 1 && roads.length !== 0 )
@@ -94,18 +101,21 @@ module.exports.loop = function () {
         else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && (upgraders.length < 2 || storages[0].store.getUsedCapacity() > 100000 && upgraders.length < 4) && builders.length === 0))
             spawnUpgrader = true;
 
-        
+        console.log(externalBuilders);
         var roomFlag = "";
         for(var flag in Game.flags) {
             if(Game.flags[flag].color == COLOR_GREEN){
-                roomFlag = JSON.stringify(Game.flags[flag].name);
+                roomFlag = Game.flags[flag].name;
             }
         }
         
         if(roomFlag !== "")
             miscWorker.SpawnRoomer.SpawnRoomer(currentSpawn);
-        if(Game.time % 1500 === 0){
-            //miscWorker.SpawnExternalBuilder.SpawnExternalBuilder(currentSpawn);
+        if(spawnExternalBuider){
+            miscWorker.SpawnExternalBuilder.SpawnExternalBuilder(currentSpawn);
+        }
+        if(spawnExternalUpgrader){
+            miscWorker.SpawnExternalUpgrader.SpawnExternalUpgrader(currentSpawn);
         }
         if (spawnMiner) {
             miscWorker.SpawnMiner.SpawnMiner(currentSpawn);
@@ -181,6 +191,12 @@ module.exports.loop = function () {
                     break;
                 case 'roadRepair':
                     role.RoadRepair(creep, roads)
+                    break;
+                case 'externalBuilder':
+                    role.ExternalBuilder(creep, "E32N41")
+                    break;
+                case 'externalUpgrader':
+                    role.ExternalUpgrader(creep, "E32N41")
                     break;
             }
         }

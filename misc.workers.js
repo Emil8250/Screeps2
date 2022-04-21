@@ -118,9 +118,18 @@ var SpawnRoomer = {
     }
 }
 
-var SpawnExternalBuilder = function SpawnExternalBuilder(){
-    var role = 'externalBuilder';
-    SpawnWorker(spawn, [MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY], role);
+var SpawnExternalBuilder = {
+    SpawnExternalBuilder: function (spawn) {
+        var role = 'externalBuilder';
+        SpawnWorker(spawn, [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, WORK, WORK], role);
+    }
+}
+
+var SpawnExternalUpgrader = {
+    SpawnExternalUpgrader: function (spawn) {
+        var role = 'externalUpgrader';
+        SpawnWorker(spawn, [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, WORK, WORK], role);
+    }
 }
 
 function SpawnWorker(spawn, worker, role) {
@@ -141,5 +150,6 @@ module.exports = {
     SpawnTowerFiller:SpawnTowerFiller,
     SpawnRoadRepair:SpawnRoadRepair,
     SpawnRoomer:SpawnRoomer,
-    SpawnExternalBuilder
+    SpawnExternalBuilder:SpawnExternalBuilder,
+    SpawnExternalUpgrader:SpawnExternalUpgrader
 };

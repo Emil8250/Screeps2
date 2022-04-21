@@ -85,6 +85,65 @@ var Role = {
         if(creep.repair(currentRoad) == ERR_NOT_IN_RANGE) {
             creep.moveTo(currentRoad, {visualizePathStyle: {stroke: '#ffaa00'}});
         }
-    }
+    },
+    ExternalBuilder: function (creep, room){
+        if (creep.store.getFreeCapacity() == 0) {
+            creep.memory.building = true;
+        }
+        if (creep.store.getUsedCapacity() == 0 || creep.memory.building == null) {
+            creep.memory.building = false;
+        }
+        if (!creep.memory.building)
+        {
+            const exitDir = creep.room.findExitTo("E34N42");
+            const exit = creep.pos.findClosestByRange(exitDir);
+            creep.moveTo(exit);
+            misc.FetchEnergy(creep);
+        }
+            
+        else{
+            if(creep.room !== Game.rooms[room]){
+                const exitDir = creep.room.findExitTo(room);
+                const exit = creep.pos.findClosestByRange(exitDir);
+                creep.moveTo(exit);
+            }
+            else{
+                var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+                if (targets.length) {
+                    creep.say(creep.build(targets[0]));
+                    if (creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
+                }
+            }    
+        }
+    },
+    ExternalUpgrader: function (creep, room){
+        if (creep.store.getFreeCapacity() == 0) {
+            creep.memory.building = true;
+        }
+        if (creep.store.getUsedCapacity() == 0 || creep.memory.building == null) {
+            creep.memory.building = false;
+        }
+        if (!creep.memory.building)
+        {
+            const exitDir = creep.room.findExitTo("E34N42");
+            const exit = creep.pos.findClosestByRange(exitDir);
+            creep.moveTo(exit);
+            misc.FetchEnergy(creep);
+        }
+        else{
+            if(creep.room !== Game.rooms[room]){
+                const exitDir = creep.room.findExitTo(room);
+                const exit = creep.pos.findClosestByRange(exitDir);
+                creep.moveTo(exit);
+            }
+            else{
+                    if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
+                }
+            }
+        }
 };
 module.exports = Role;
