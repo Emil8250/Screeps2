@@ -20,31 +20,31 @@ module.exports.loop = function () {
     var Upgraders;
     var StorageEnergy;
     var totalExternalBuilders = 0;
-    
+
     for (var spawn in Game.spawns) {
         var currentSpawn = Game.spawns[spawn];
         if (Game.cpu.bucket > 9999)
             Game.cpu.generatePixel();
-        var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
+        var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.room === currentSpawn.room);
         var spawnMiner = false;
-        var externalBuilders = _.filter(Game.creeps, (creep) => creep.memory.role == 'externalBuilder');
+        var externalBuilders = _.filter(Game.creeps, (creep) => creep.memory.role == 'externalBuilder' && creep.room === currentSpawn.room);
         var spawnHauler = false;
-        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room === currentSpawn.room );
         var spawnUpgrader = false;
-        var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+        var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.room === currentSpawn.room);
         var spawnBuilder = false;
-        var containerRepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'containerRepair');
+        var containerRepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'containerRepair' && creep.room === currentSpawn.room);
         var spawnContainerRepairer = false;
-        var extensionFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'extensionFiller');
+        var extensionFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'extensionFiller' && creep.room === currentSpawn.room);
         var spawnExtensionFiller = false;
-        var storageFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'storageFiller');
+        var storageFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'storageFiller' && creep.room === currentSpawn.room);
         var spawnStorageFiller = false;
-        var towerFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'towerFiller');
+        var towerFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'towerFiller' && creep.room === currentSpawn.room);
         var spawnTowerFiller = false;
-        var roadRepair = _.filter(Game.creeps, (creep) => creep.memory.role == 'roadRepair');
+        var roadRepair = _.filter(Game.creeps, (creep) => creep.memory.role == 'roadRepair' && creep.room === currentSpawn.room);
         var spawnRoadRepair = false;
         var spawnExternalBuider = false;
-        var externalUpgrader= _.filter(Game.creeps, (creep) => creep.memory.role == 'externalUpgrader');
+        var externalUpgrader= _.filter(Game.creeps, (creep) => creep.memory.role == 'externalUpgrader' && creep.room === currentSpawn.room);
         var spawnExternalUpgrader = false;
         var storages = currentSpawn.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
@@ -80,9 +80,9 @@ module.exports.loop = function () {
         var lowContainer;
         if (targets != null)
             lowContainer = _.min(targets, function(container) { return container.hits; });
-        if (miners.length < 1 || miners.length < targets.length)
+        if (miners.length < 1 || (miners.length < targets.length && targets.length != 0))
             spawnMiner = true;
-        else if (builders.length < 1 && currentSpawn.room.find(FIND_CONSTRUCTION_SITES).length > 0)
+        else if (builders.length < 2 || (builders.length < 3 &&  currentSpawn.room.controller.level <= 2) && currentSpawn.room.find(FIND_CONSTRUCTION_SITES).length > 0)
             spawnBuilder = true;
         else if(containerRepairers.length < 1 && lowContainer != null && lowContainer.hits < 100000)
             spawnContainerRepairer = true;
@@ -90,10 +90,10 @@ module.exports.loop = function () {
             spawnExtensionFiller = true;
         else if(storageFillers.length < 1 && storages.length !== 0 || storageFillers.length < targets.length && storages.length !== 0)
             spawnStorageFiller = true;
-        else if(externalBuilders.length < 3)
-            spawnExternalBuider = true;
-        else if(externalUpgrader.length < 1)
-            spawnExternalUpgrader = true;
+            // else if(externalBuilders.length < 3)
+            //        spawnExternalBuider = true;
+            // else if(externalUpgrader.length < 1)
+        //    spawnExternalUpgrader = true;
         else if(towerFillers.length < 1 && towers.length !== 0 && towers[0].store.getFreeCapacity(RESOURCE_ENERGY) !== 0)
             spawnTowerFiller = true;
         else if(roadRepair.length < 1 && roads.length !== 0 )
@@ -101,14 +101,13 @@ module.exports.loop = function () {
         else if (upgraders.length < 1 || (currentSpawn.room.energyAvailable === currentSpawn.room.energyCapacityAvailable && (upgraders.length < 2 || storages[0].store.getUsedCapacity() > 100000 && upgraders.length < 4) && builders.length === 0))
             spawnUpgrader = true;
 
-        console.log(externalBuilders);
         var roomFlag = "";
         for(var flag in Game.flags) {
             if(Game.flags[flag].color == COLOR_GREEN){
                 roomFlag = Game.flags[flag].name;
             }
         }
-        
+
         if(roomFlag !== "")
             miscWorker.SpawnRoomer.SpawnRoomer(currentSpawn);
         if(spawnExternalBuider){
@@ -153,13 +152,17 @@ module.exports.loop = function () {
             miscWorker.SpawnStorageFiller.SpawnStorageFiller(currentSpawn, miners.length, extensionFillers.length);
         if (spawnTowerFiller)
             miscWorker.SpawnTowerFiller.SpawnTowerFiller(currentSpawn);
-        buildExtensions.run(currentSpawn.room.name);
+        if(currentSpawn.room.controller.level >= 6)
+            buildExtensions.run(currentSpawn.room.name);
         buildContainers.run(currentSpawn.room);
         buildConstructions.storage(currentSpawn);
         buildConstructions.tower(currentSpawn);
-        buildConstructions.road(currentSpawn, storages[0].pos, controllers[0]);
-        for (let i = 0; i < targets.length; i++) {
-            buildConstructions.road(currentSpawn, storages[0].pos, targets[i]);
+        if(storages.length  > 0 )
+        {
+            buildConstructions.road(currentSpawn, storages[0].pos, controllers[0]);
+            for (let i = 0; i < targets.length; i++) {
+                buildConstructions.road(currentSpawn, storages[0].pos, targets[i]);
+            }
         }
         for(var name in Game.creeps) {
             var creep = Game.creeps[name];
@@ -213,9 +216,9 @@ module.exports.loop = function () {
         RCLNext += currentSpawn.room.controller.progressTotal;
         Miners += miners.length;
         Upgraders += upgraders.length;
-        if(storages)
+        if(storages.length  > 0)
             StorageEnergy += storages[0].store.getUsedCapacity()
-        
+
     }
     Memory.stats = {
         ControllerProgress: ControllerProgress,
