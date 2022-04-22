@@ -37,12 +37,12 @@ var FetchEnergy = {
                 currentContainer = Game.getObjectById(creep.memory.container);
             
             if (creep.withdraw(currentContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE && creep.store.getFreeCapacity() != 0) {
-                creep.moveTo(currentContainer, {visualizePathStyle: {stroke: '#ffaa00'}});
+                creep.moveTo(currentContainer, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
             }
         } else if (droppedResources.length > 0) {
             creep.pickup(droppedResources[0]);
             if (creep.pickup(droppedResources[0] == ERR_NOT_IN_RANGE) && creep.store.getFreeCapacity() != 0) {
-                creep.moveTo(droppedResources[0])
+                creep.moveTo(droppedResources[0], {reusePath: 50})
             }
         }
     },

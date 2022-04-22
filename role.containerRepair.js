@@ -17,11 +17,11 @@ var containerRepair = {
         if(creep.store.getUsedCapacity() <= 0)
         {
             if(creep.withdraw(currentContainer, RESOURCE_ENERGY) == -9) {
-                creep.moveTo(currentContainer, {visualizePathStyle: {stroke: '#ffaa00'}});
+                creep.moveTo(currentContainer, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
             }
         }
         if(creep.repair(currentContainer) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(currentContainer, {visualizePathStyle: {stroke: '#ffaa00'}});
+            creep.moveTo(currentContainer, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
         }
     }
 };

@@ -23,8 +23,6 @@ module.exports.loop = function () {
 
     for (var spawn in Game.spawns) {
         var currentSpawn = Game.spawns[spawn];
-        if (Game.cpu.bucket > 9999)
-            Game.cpu.generatePixel();
         var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.room === currentSpawn.room);
         var spawnMiner = false;
         var externalBuilders = _.filter(Game.creeps, (creep) => creep.memory.role == 'externalBuilder' && creep.room === currentSpawn.room);
@@ -80,7 +78,7 @@ module.exports.loop = function () {
         var lowContainer;
         if (targets != null)
             lowContainer = _.min(targets, function(container) { return container.hits; });
-        if (miners.length < 1 || (miners.length < targets.length && targets.length != 0))
+        if (miners.length < 1 || (miners.length < targets.length && targets.length !== 0))
             spawnMiner = true;
         else if (builders.length < 2 || (builders.length < 3 &&  currentSpawn.room.controller.level <= 2) && currentSpawn.room.find(FIND_CONSTRUCTION_SITES).length > 0)
             spawnBuilder = true;

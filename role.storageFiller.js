@@ -15,7 +15,7 @@ var storageFiller = {
         }
         if (creep.memory.filling) {
             if (creep.transfer(storages[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(storages[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                creep.moveTo(storages[0], {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
             }
         } else {
             misc.FetchEnergy(creep, true);
