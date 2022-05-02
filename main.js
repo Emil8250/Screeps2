@@ -20,30 +20,111 @@ module.exports.loop = function () {
     var Upgraders;
     var StorageEnergy;
     var totalExternalBuilders = 0;
-
+    
     for (var spawn in Game.spawns) {
+        var miners = [];
+        var upgraders = [];
+        var builders = [];
+        var extensionFillers = [];
+        var containerRepairers = [];
+        var storageFillers = [];
+        var towerFillers = [];
+        var roadRepair = [];
         var currentSpawn = Game.spawns[spawn];
-        var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.room === currentSpawn.room);
+        /*for (const i in Game.creeps) {
+            const currentCreep = Game.creeps[i];
+            switch (currentCreep.memory.role) {
+                case "miner":
+                    miners.push(currentCreep);
+                    break;
+                case "upgrader":
+                    upgraders.push(currentCreep);
+                    break;
+                case "builder":
+                    
+            }
+        }*/
+        var targets = currentSpawn.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_CONTAINER);
+            }
+        });
+        var roads = currentSpawn.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_ROAD);
+            }
+        });
+        console.log("1 " + currentSpawn.name + " " + Game.cpu.getUsed());
+        for(var name in Game.creeps) {
+            var creep = Game.creeps[name];
+
+            switch (creep.memory.role) {
+                case 'miner':
+                    miners.push(creep);
+                    role.Miner(creep);
+                    break;
+                case 'roomer':
+                    role.Roomer(creep, roomFlag);
+                    break;
+                case 'upgrader':
+                    upgraders.push(creep);
+                    roleUpgrader.run(creep);
+                    break;
+                case 'builder':
+                    builders.push(creep);
+                    role.Builder(creep);
+                    break;
+                case 'extensionFiller':
+                    extensionFillers.push(creep);
+                    roleExtensionFiller.run(creep);
+                    break;
+                case 'containerRepair':
+                    containerRepairers.push(creep);
+                    roleContainerRepair.run(creep, targets);
+                    break;
+                case 'storageFiller':
+                    storageFillers.push(creep);
+                    roleStorageFiller.run(creep);
+                    break;
+                case 'towerFiller':
+                    towerFillers.push(towerFillers);
+                    roleTowerFiller.run(creep)
+                    break;
+                case 'roadRepair':
+                    roadRepair.push(creep);
+                    role.RoadRepair(creep, roads)
+                    break;
+                case 'externalBuilder':
+                    role.ExternalBuilder(creep, "E32N41")
+                    break;
+                case 'externalUpgrader':
+                    role.ExternalUpgrader(creep, "E32N41")
+                    break;
+            }
+        }
+        
+        //var miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.room === currentSpawn.room);
         var spawnMiner = false;
-        var externalBuilders = _.filter(Game.creeps, (creep) => creep.memory.role == 'externalBuilder' && creep.room === currentSpawn.room);
+        //var externalBuilders = _.filter(Game.creeps, (creep) => creep.memory.role == 'externalBuilder' && creep.room === currentSpawn.room);
         var spawnHauler = false;
-        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room === currentSpawn.room );
+       // var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room === currentSpawn.room );
         var spawnUpgrader = false;
-        var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.room === currentSpawn.room);
+        //var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.room === currentSpawn.room);
         var spawnBuilder = false;
-        var containerRepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'containerRepair' && creep.room === currentSpawn.room);
+        //var containerRepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'containerRepair' && creep.room === currentSpawn.room);
         var spawnContainerRepairer = false;
-        var extensionFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'extensionFiller' && creep.room === currentSpawn.room);
+        //var extensionFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'extensionFiller' && creep.room === currentSpawn.room);
         var spawnExtensionFiller = false;
-        var storageFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'storageFiller' && creep.room === currentSpawn.room);
+       // var storageFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'storageFiller' && creep.room === currentSpawn.room);
         var spawnStorageFiller = false;
-        var towerFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'towerFiller' && creep.room === currentSpawn.room);
+        //var towerFillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'towerFiller' && creep.room === currentSpawn.room);
         var spawnTowerFiller = false;
-        var roadRepair = _.filter(Game.creeps, (creep) => creep.memory.role == 'roadRepair' && creep.room === currentSpawn.room);
+       // var roadRepair = _.filter(Game.creeps, (creep) => creep.memory.role == 'roadRepair' && creep.room === currentSpawn.room);
         var spawnRoadRepair = false;
         var spawnExternalBuider = false;
-        var externalUpgrader= _.filter(Game.creeps, (creep) => creep.memory.role == 'externalUpgrader' && creep.room === currentSpawn.room);
+        //var externalUpgrader= _.filter(Game.creeps, (creep) => creep.memory.role == 'externalUpgrader' && creep.room === currentSpawn.room);
         var spawnExternalUpgrader = false;
+        console.log("2 " + currentSpawn.name + " " + Game.cpu.getUsed());        
         var storages = currentSpawn.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_STORAGE);
@@ -64,16 +145,6 @@ module.exports.loop = function () {
         if(hostiles.length > 0 && towers.length > 0) {
             towers.forEach(tower => tower.attack(hostiles[0]));
         }
-        var targets = currentSpawn.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_CONTAINER);
-            }
-        });
-        var roads = currentSpawn.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return (structure.structureType == STRUCTURE_ROAD);
-            }
-        });
 
         var lowContainer;
         if (targets != null)
@@ -160,45 +231,6 @@ module.exports.loop = function () {
             buildConstructions.road(currentSpawn, storages[0].pos, controllers[0]);
             for (let i = 0; i < targets.length; i++) {
                 buildConstructions.road(currentSpawn, storages[0].pos, targets[i]);
-            }
-        }
-        for(var name in Game.creeps) {
-            var creep = Game.creeps[name];
-
-            switch (creep.memory.role) {
-                case 'miner':
-                    role.Miner(creep);
-                    break;
-                case 'roomer':
-                    role.Roomer(creep, roomFlag);
-                    break;
-                case 'upgrader':
-                    roleUpgrader.run(creep);
-                    break;
-                case 'builder':
-                    role.Builder(creep);
-                    break;
-                case 'extensionFiller':
-                    roleExtensionFiller.run(creep);
-                    break;
-                case 'containerRepair':
-                    roleContainerRepair.run(creep, targets);
-                    break;
-                case 'storageFiller':
-                    roleStorageFiller.run(creep);
-                    break;
-                case 'towerFiller':
-                    roleTowerFiller.run(creep)
-                    break;
-                case 'roadRepair':
-                    role.RoadRepair(creep, roads)
-                    break;
-                case 'externalBuilder':
-                    role.ExternalBuilder(creep, "E32N41")
-                    break;
-                case 'externalUpgrader':
-                    role.ExternalUpgrader(creep, "E32N41")
-                    break;
             }
         }
         var test =  {x:currentSpawn.pos.x + 7 , y: currentSpawn.pos.y + 3};
